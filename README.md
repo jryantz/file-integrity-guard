@@ -1,1 +1,1 @@
-# file-integrity-guard
+# File Integrity Guard
