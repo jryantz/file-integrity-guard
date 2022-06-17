@@ -1,6 +1,6 @@
 import unittest
 
-from file_integrity_guard import __version__
+from guardian import __version__
 
 class TestPackage(unittest.TestCase):
     def test_version(self):
