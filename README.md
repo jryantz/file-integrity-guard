@@ -1,5 +1,5 @@
 # File Integrity Guard
 
-[![](https://img.shields.io/github/checks-status/jryantz/file-integrity-guard/main)](https://github.com/jryantz/file-integrity-guard/actions)
+[![build & test](https://github.com/jryantz/file-integrity-guard/actions/workflows/python-app.yml/badge.svg)](https://github.com/jryantz/file-integrity-guard/actions/workflows/python-app.yml)
 [![](https://img.shields.io/github/repo-size/jryantz/file-integrity-guard)](https://github.com/jryantz/file-integrity-guard)
 [![](https://img.shields.io/github/license/jryantz/file-integrity-guard)](https://github.com/jryantz/file-integrity-guard/blob/main/LICENSE)
