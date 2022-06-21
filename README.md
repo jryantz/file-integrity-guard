@@ -4,44 +4,22 @@
 [![](https://img.shields.io/github/repo-size/jryantz/file-integrity-guard)](https://github.com/jryantz/file-integrity-guard)
 [![](https://img.shields.io/github/license/jryantz/file-integrity-guard)](https://github.com/jryantz/file-integrity-guard/blob/main/LICENSE)
 
+## Requirements
+
+File Integrity Guard requires Python 3.10.
+
+Python package requirements are documented in [`requirements.txt`](/requirements.txt).
+
 ## Installation
 
 ### Windows
 
-Create a virtual environment:
-
-```
-python -m venv env
-```
-
-Activate the environment:
-
-```
-env/Scripts/activate
-```
-
-Install requirements:
-
-```
-pip install -r requirements.txt
-```
+1. Create a virtual environment: `python -m venv env`
+1. Activate the environment: `env/Scripts/activate`
+1. Install requirements: `pip install -r requirements.txt`
 
 ### Mac
 
-Create a virtual environment:
-
-```
-python3 -m venv env
-```
-
-Activate the environment:
-
-```
-source env/bin/activate
-```
-
-Install requirements:
-
-```
-pip install -r requirements.txt
-```
+1. Create a virtual environment: `python3 -m venv env`
+1. Activate the environment: `source env/bin/activate`
+1. Install requirements: `pip install -r requirements.txt`
