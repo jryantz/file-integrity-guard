@@ -8,12 +8,9 @@ class DbConfig:
 
     def __init__(self):
         if not hasattr(self, 'name'):
-            self.name = 'guardian'
+            self.name = 'db.sqlite3'
 
-        if not hasattr(self, 'verbose_name'):
-            self.verbose_name = self.name.title()
-
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(self.name)
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)
