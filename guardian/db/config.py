@@ -1,10 +1,8 @@
-import guardian.db
+import sqlite3
 
-from guardian.settings import BASE_DIR
-
-class AppConfig:
+class DbConfig:
     """
-    Class representing the File Integrity Guard application and its
+    Class representing the File Integrity Guard database and its
     default configuration.
     """
 
@@ -15,8 +13,7 @@ class AppConfig:
         if not hasattr(self, 'verbose_name'):
             self.verbose_name = self.name.title()
 
-        print(BASE_DIR)
-        guardian.db.DbConfig()
+        conn = sqlite3.connect('db.sqlite3')
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)
