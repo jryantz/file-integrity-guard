@@ -1,12 +1,15 @@
-import guardian.db
+from guardian.settings import BASE_DIR, GUARDED_DIRS, GUARDIAN_CACHE_FILENAME
 
-from guardian.settings import BASE_DIR
-
-class AppConfig:
+class AppConfig(object):
     """
     Class representing the File Integrity Guard application and its
     default configuration.
     """
+
+    def __new__(self):
+        if not hasattr(self, 'instance'):
+            self.instance = super(AppConfig, self).__new__(self)
+        return self.instance
 
     def __init__(self):
         if not hasattr(self, 'name'):
@@ -15,8 +18,19 @@ class AppConfig:
         if not hasattr(self, 'verbose_name'):
             self.verbose_name = self.name.title()
 
-        print(BASE_DIR)
-        guardian.db.DbConfig()
+        self.cache_filename = '.guardian'
+        if isinstance(GUARDIAN_CACHE_FILENAME, str) \
+           and len(GUARDIAN_CACHE_FILENAME) > 0 \
+           and GUARDIAN_CACHE_FILENAME[0:1] == '.':
+            self.cache_filename = GUARDIAN_CACHE_FILENAME
+
+        self.project_dir = None
+        if isinstance(BASE_DIR, str):
+            self.project_dir = BASE_DIR
+
+        self.scannable_dirs = []
+        if isinstance(GUARDED_DIRS, list):
+            self.scannable_dirs = GUARDED_DIRS
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)
