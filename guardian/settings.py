@@ -15,6 +15,8 @@ DEBUG = True
 
 # Runtime Config
 
+GUARDIAN_CACHE_FILENAME = '.guardian'
+
 GUARDED_DIRS = [
 
 ]
