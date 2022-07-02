@@ -2,7 +2,7 @@ import logging
 
 from guardian.settings import DEBUG
 
-class AppLogger(object):
+class CoreLogger(object):
     """
     App logger for registering issues at runtime.
     
@@ -11,7 +11,7 @@ class AppLogger(object):
 
     def __new__(self):
         if not hasattr(self, 'instance'):
-            self.instance = super(AppLogger, self).__new__(self)
+            self.instance = super(CoreLogger, self).__new__(self)
         return self.instance
 
     def __init__(self):
