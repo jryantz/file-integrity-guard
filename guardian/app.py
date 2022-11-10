@@ -1,6 +1,6 @@
 from guardian.core.app import AppConfig
 
-from guardian.settings import BASE_DIR, GUARDED_DIRS, GUARDIAN_CACHE_FILENAME
+from guardian.settings import BASE_DIR, GUARDED_DIRS, GUARDED_FILES, GUARDIAN_CACHE_FILENAME
 
 class GuardianConfig(AppConfig):
     """
@@ -32,9 +32,13 @@ class GuardianConfig(AppConfig):
         if isinstance(BASE_DIR, str):
             self.project_dir = BASE_DIR
 
-        self.scannable_dirs = []
+        self.guarded_dirs = []
         if isinstance(GUARDED_DIRS, list):
-            self.scannable_dirs = GUARDED_DIRS
+            self.guarded_dirs = GUARDED_DIRS
+
+        self.guarded_files = []
+        if isinstance(GUARDED_FILES, list):
+            self.guarded_files = GUARDED_FILES
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)

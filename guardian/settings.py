@@ -21,6 +21,10 @@ GUARDED_DIRS = [
 
 ]
 
+GUARDED_FILES = [
+
+]
+
 # Reporting Config
 
 ADMINS = [
