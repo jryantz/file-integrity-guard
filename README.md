@@ -23,3 +23,27 @@ Python package requirements are documented in [`requirements.txt`](/requirements
 1. Create a virtual environment: `python3 -m venv env`
 1. Activate the environment: `source env/bin/activate`
 1. Install requirements: `pip install -r requirements.txt`
+
+## Usage
+
+### Windows
+
+Execute the following command from the folder containing the application.
+
+```
+$ python -m guardian
+```
+
+### Mac
+
+Execute the following command from the directory containing the application.
+
+```
+$ python3 -m guardian
+```
+
+## Things to Document
+
+Excluded Files:
+
+- `.*`
