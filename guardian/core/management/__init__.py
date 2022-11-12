@@ -2,27 +2,8 @@ import os
 import pkgutil
 import sys
 
+import guardian
 from guardian.app import GuardianConfig
-
-def find_commands(management_dir):
-    """
-    Navigates through the commands directory in the management module.
-    """
-
-    command_dir = os.path.join(management_dir, "commands")
-    return [
-        name
-        for _, name, is_pkg in pkgutil.iter_modules([command_dir])
-        if not is_pkg and not name.startswith("_")
-    ]
-
-def get_commands():
-    """
-    Return the command names to their callback modules.
-    """
-
-    commands = {name: "guardian.core" for name in find_commands(__path__[0])}
-    return commands
 
 class ManagementUtility:
     """
@@ -36,7 +17,21 @@ class ManagementUtility:
             self.prog_name = "python -m guardian"
 
     def execute(self):
-        print(self.argv)
+        """
+        
+        """
+
+        try:
+            subcommand = self.argv[1]
+        except IndexError:
+            subcommand = "help"
+
+        if subcommand == "help":
+            sys.stdout.write("Guardian Help" + "\n")
+        elif subcommand == "version":
+            sys.stdout.write(guardian.get_version() + "\n")
+        else:
+            pass
 
 def execute(argv=None):
     """
