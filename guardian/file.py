@@ -3,7 +3,7 @@ import os
 import guardian.app
 from guardian.core.logger import CoreLogger
 
-class File():
+class File:
     """
     The object that represents each file.
     """

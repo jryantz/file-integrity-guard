@@ -3,13 +3,13 @@ import os
 import guardian.app
 from guardian.file import File
 
-class Scanner():
+class Scanner:
     """
     The directory scanner that iterates over all files in a
     defined directory.
     """
 
-    _files: list[File] = []
+    _files: list[File] = None
 
     def __init__(self):
         pass
@@ -22,11 +22,16 @@ class Scanner():
 
         config = guardian.app.GuardianConfig()
 
-        for path in config.guarded_dirs:
-            self._walk_dirs(dir=path)
+        if self._files is None:
+            self._files = []
 
-        for path in config.guarded_files:
-            self._guard_file(fullpath=path)
+            for path in config.guarded_dirs:
+                self._walk_dirs(dir=path)
+
+            for path in config.guarded_files:
+                self._guard_file(fullpath=path)
+
+            self._files = sorted(self._files, key=lambda x: str(x))
 
         return self._files
 
