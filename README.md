@@ -41,9 +41,3 @@ Execute the following command from the directory containing the application.
 ```
 $ python3 -m guardian
 ```
-
-## Things to Document
-
-Excluded Files:
-
-- `.*`
