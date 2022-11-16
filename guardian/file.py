@@ -1,8 +1,5 @@
 import os
 
-import guardian.app
-from guardian.core.logger import CoreLogger
-
 class File:
     """
     The object that represents each file.
@@ -34,8 +31,6 @@ class File:
             The name of the file
         """
 
-        self.logger = CoreLogger().logger
-
         # Throw error if all params are None
         if (
             fullpath is None and
@@ -63,8 +58,8 @@ class File:
             fullpath = os.path.join(dirpath, filename)
         abspath = os.path.abspath(fullpath)
         
-        self._dirpath = os.path.dirname(fullpath)
-        self._filename = os.path.basename(fullpath)
+        self._dirpath = os.path.dirname(abspath)
+        self._filename = os.path.basename(abspath)
         self._location = abspath
 
     def __repr__(self):
