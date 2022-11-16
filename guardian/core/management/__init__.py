@@ -6,7 +6,6 @@ from difflib import get_close_matches
 from importlib import import_module
 
 import guardian
-from guardian.app import GuardianConfig
 from guardian.core.management.base import (
     BaseCommand,
     CommandError,
