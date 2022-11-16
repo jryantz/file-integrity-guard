@@ -1,6 +1,6 @@
 import logging
 
-from guardian.settings import DEBUG
+from guardian.conf import settings
 
 class CoreLogger(object):
     """
@@ -17,12 +17,12 @@ class CoreLogger(object):
     def __init__(self):
         # Create logger.
         self.logger = logging.getLogger('guardian')
-        if DEBUG: self.logger.setLevel(logging.DEBUG)
+        if settings.debug: self.logger.setLevel(logging.DEBUG)
         else: self.logger.setLevel(logging.WARNING)
 
         # Create console handler and set level to debug.
         ch = logging.StreamHandler()
-        if DEBUG: ch.setLevel(logging.DEBUG)
+        if settings.debug: ch.setLevel(logging.DEBUG)
         else: ch.setLevel(logging.WARNING)
 
         # Create formatter.
