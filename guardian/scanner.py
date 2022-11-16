@@ -1,6 +1,6 @@
 import os
 
-import guardian.app
+from guardian.conf import settings
 from guardian.file import File
 
 class Scanner:
@@ -20,15 +20,13 @@ class Scanner:
         and retains each file as an object to be guarded.
         """
 
-        config = guardian.app.GuardianConfig()
-
         if self._files is None:
             self._files = []
 
-            for path in config.guarded_dirs:
+            for path in settings.guarded_dirs:
                 self._walk_dirs(dir=path)
 
-            for path in config.guarded_files:
+            for path in settings.guarded_files:
                 self._guard_file(fullpath=path)
 
             self._files = sorted(self._files, key=lambda x: str(x))
