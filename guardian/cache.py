@@ -1,5 +1,6 @@
+import os
 
-
+from guardian.conf import settings
 from guardian.file import File
 
 class Cache:
@@ -9,7 +10,10 @@ class Cache:
     """
 
     def __init__(self, file: File):
-        self._file = file
+        self._target_file = file
+        self._cache_file = os.path.join(file.get_dirpath(), settings.cache_filename)
+
+        print(self._cache_file)
 
     def create(self):
         """
