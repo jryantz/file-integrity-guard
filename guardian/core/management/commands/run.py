@@ -1,6 +1,7 @@
 
 
-from guardian.app import GuardianConfig
+from guardian.app import AppConfig
+from guardian.cache import Cache
 from guardian.core.management.base import BaseCommand
 from guardian.scanner import Scanner
 
@@ -9,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Initialize the app.
-        GuardianConfig()
+        AppConfig()
 
         # Create a list of the files to be scanned.
         scanner = Scanner()
@@ -17,3 +18,4 @@ class Command(BaseCommand):
 
         for file in files:
             print(file)
+            Cache(file)
