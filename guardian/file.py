@@ -1,6 +1,5 @@
-import os
-
 from hashlib import sha512
+from pathlib import Path
 
 class File:
     """
@@ -57,11 +56,13 @@ class File:
         ): raise ValueError('Parameter values must be provided: fullpath -OR- dirpath and filename')
 
         if fullpath is None:
-            fullpath = os.path.join(dirpath, filename)
-        abspath = os.path.abspath(fullpath)
+            filepath = Path(dirpath, filename)
+        else:
+            filepath = Path(fullpath)
+        abspath = filepath.absolute()
         
-        self._dirpath = os.path.dirname(abspath)
-        self._filename = os.path.basename(abspath)
+        self._dirpath = abspath.parent
+        self._filename = abspath.name
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.get_location())
@@ -90,7 +91,7 @@ class File:
 
         return self._filename
 
-    def get_location(self) -> str:
+    def get_location(self) -> Path:
         """
         Returns the absolute file location.
 
@@ -102,7 +103,7 @@ class File:
 
         dirpath = self.get_dirpath()
         filename = self.get_filename()
-        return os.path.join(dirpath, filename)
+        return Path(dirpath, filename)
 
     def get_hash(self) -> str:
         """
