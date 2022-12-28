@@ -1,5 +1,7 @@
 import os
 
+from hashlib import sha512
+
 class File:
     """
     The object that represents each file.
@@ -60,7 +62,6 @@ class File:
         
         self._dirpath = os.path.dirname(abspath)
         self._filename = os.path.basename(abspath)
-        self._location = abspath
 
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.get_location())
@@ -99,7 +100,9 @@ class File:
             The absolute file path
         """
 
-        return self._location
+        dirpath = self.get_dirpath()
+        filename = self.get_filename()
+        return os.path.join(dirpath, filename)
 
     def get_hash(self) -> str:
         """
@@ -111,4 +114,9 @@ class File:
             The hash of the file contents
         """
 
-        return ''
+        hash = sha512()
+        file = self.get_location()
+        with open(file, 'rb') as f:
+            for chunk in iter(lambda: f.read(128 * hash.block_size), b''):
+                hash.update(chunk)
+        return hash.hexdigest()
