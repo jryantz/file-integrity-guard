@@ -18,11 +18,15 @@ DEBUG = True
 GUARDIAN_CACHE_FILENAME = '.guardian'
 
 GUARDED_DIRS = [
-
+    'example',
 ]
 
 GUARDED_FILES = [
+    'example/test1.txt',
+]
 
+GUARDED_PATHS = [
+    
 ]
 
 # Reporting Config
@@ -32,4 +36,3 @@ ADMINS = [
 ]
 
 DEFAULT_FROM_EMAIL = ''
-
