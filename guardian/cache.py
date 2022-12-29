@@ -33,26 +33,26 @@ class Cache:
         for manipulation.
         """
 
-        filepath: str = str(self._target_file.get_location())
+        filename: str = str(self._target_file.get_filename())
         data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
             data = json.load(file)
             
-        return data.get(filepath, {})
+        return data.get(filename, {})
 
     def _update_cache(self, content: dict[str, str]):
         """
         Updates the target file data in the cache.
         """
 
-        filepath: str = str(self._target_file.get_location())
+        filename: str = str(self._target_file.get_filename())
         data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
             data = json.load(file)
 
-        data[filepath] = content
+        data[filename] = content
 
         with open(self._cache_file, 'w') as file:
             json.dump(data, file)
