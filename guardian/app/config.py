@@ -7,12 +7,8 @@ class AppConfig:
     """
 
     def __new__(self):
-        logger = CoreLogger().logger
-
         if not hasattr(self, 'instance'):
             self.instance = super(AppConfig, self).__new__(self)
-            logger.debug('Created %s.' % self)
-        logger.debug('Returned %s.' % self)
         return self.instance
 
     def __init__(self):
