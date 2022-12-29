@@ -12,9 +12,12 @@ class Cache:
     the hash data.
     """
 
-    def __init__(self, file: File):
+    def __init__(self, file: File, cache_filename: str = None):
+        if cache_filename is None:
+            cache_filename = settings.cache_filename
+
         self._target_file: File = file
-        self._cache_file: Path = Path(file.get_dirpath(), settings.cache_filename)
+        self._cache_file: Path = Path(file.get_dirpath(), cache_filename).absolute()
 
     def _create_cache(self):
         """
@@ -24,27 +27,27 @@ class Cache:
         with open(self._cache_file, 'w') as file:
             json.dump({}, file)
 
-    def _read_cache(self) -> dict[int, str]:
+    def _read_cache(self) -> dict[str, str]:
         """
         Reads the target file data from the cache file into memory
         for manipulation.
         """
 
         filepath: str = str(self._target_file.get_location())
-        data: dict[str, dict[int, str]] = {}
+        data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
             data = json.load(file)
             
         return data.get(filepath, {})
 
-    def _update_cache(self, content: dict[int, str]):
+    def _update_cache(self, content: dict[str, str]):
         """
         Updates the target file data in the cache.
         """
 
         filepath: str = str(self._target_file.get_location())
-        data: dict[str, dict[int, str]] = {}
+        data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
             data = json.load(file)
@@ -54,23 +57,23 @@ class Cache:
         with open(self._cache_file, 'w') as file:
             json.dump(data, file)
 
-    def _get_timestamp(self) -> int:
+    def _get_timestamp(self) -> str:
         """
         Returns the UTC timestamp as milliseconds since 1970.
         """
 
         dt = datetime.now(timezone.utc)
         ts = dt.timestamp()
-        return round(ts * 1000)
+        return str(round(ts * 1000))
 
-    def _get_latest_checksum(self, data: dict[int, str]) -> str:
+    def _get_latest_checksum(self, data: dict[str, str]) -> str:
         """
         Returns the latest checksum in the cache.
         """
 
-        timestamps: list[int] = sorted(data.keys())
+        timestamps: list[str] = sorted(data.keys())
         if len(timestamps) > 0:
-            timestamp: int = max(timestamps)
+            timestamp: str = max(timestamps)
             return data[timestamp]
         return ''
 
@@ -86,8 +89,8 @@ class Cache:
             self._create_cache()
 
         # Read the cache and store temporarily.
-        timestamp: int = self._get_timestamp()
-        cache_data: dict[int, str] = self._read_cache()
+        timestamp: str = self._get_timestamp()
+        cache_data: dict[str, str] = self._read_cache()
 
         # Get the latest cached checksum and the current checksum.
         cache_checksum: str = self._get_latest_checksum(cache_data)
