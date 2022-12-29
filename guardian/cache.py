@@ -5,6 +5,7 @@ from pathlib import Path
 
 from guardian.conf import settings
 from guardian.file import File
+from guardian.utils.log import CoreLogger
 
 class Cache:
     """
@@ -97,7 +98,12 @@ class Cache:
         current_checksum: str = self._target_file.get_hash()
 
         # Check if the checksum has changed.
+        if current_checksum == cache_checksum:
+            # If the checksum hasn't changed, log to debug.
+            CoreLogger().logger.info('match %s' % self._target_file)
         if current_checksum != cache_checksum:
             # If the checksums don't match, add then alert.
             cache_data[timestamp] = current_checksum
             self._update_cache(cache_data)
+
+            CoreLogger().logger.warning('change %s' % self._target_file)
