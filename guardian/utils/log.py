@@ -12,9 +12,13 @@ class CoreLogger(object):
     def __new__(self):
         if not hasattr(self, 'instance'):
             self.instance = super(CoreLogger, self).__new__(self)
+            self.initialized = False
         return self.instance
 
     def __init__(self):
+        # Check if the logger already exists.
+        if self.initialized: return
+
         # Create logger.
         self.logger = logging.getLogger('guardian')
         if settings.debug: self.logger.setLevel(logging.DEBUG)
@@ -40,3 +44,5 @@ class CoreLogger(object):
         # self.logger.warning('warn message')
         # self.logger.error('error message')
         # self.logger.critical('critical message')
+
+        self.initialized = True
