@@ -116,8 +116,8 @@ class File:
         """
 
         hash = sha512()
-        file = self.get_location()
-        with open(file, 'rb') as f:
-            for chunk in iter(lambda: f.read(128 * hash.block_size), b''):
+        filepath = self.get_location()
+        with open(filepath, 'rb') as file:
+            for chunk in iter(lambda: file.read(128 * hash.block_size), b''):
                 hash.update(chunk)
         return hash.hexdigest()
