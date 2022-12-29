@@ -16,6 +16,5 @@ class Command(BaseCommand):
         scanner = Scanner()
         files = scanner.get_files()
         for file in files:
-            print(file)
             cache = Cache(file)
             cache.check()
