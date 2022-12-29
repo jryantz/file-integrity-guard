@@ -99,11 +99,16 @@ class Cache:
 
         # Check if the checksum has changed.
         if current_checksum == cache_checksum:
-            # If the checksum hasn't changed, log to debug.
-            CoreLogger().logger.info('match %s' % self._target_file)
+            # Log to INFO if checksum hasn't changed.
+            CoreLogger().logger.info('CACHE MATCH - %s' % self._target_file)
         if current_checksum != cache_checksum:
-            # If the checksums don't match, add then alert.
+            # Add latest checksum.
             cache_data[timestamp] = current_checksum
             self._update_cache(cache_data)
 
-            CoreLogger().logger.warning('change %s' % self._target_file)
+            if cache_checksum == '':
+                # Log to WARN if first file access.
+                CoreLogger().logger.warning('CACHE CREATE %s' % self._target_file)
+            else:
+                # Log to WARN if checksums don't match.
+                CoreLogger().logger.warning('CACHE UPDATE %s' % self._target_file)
