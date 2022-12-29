@@ -15,7 +15,6 @@ class Command(BaseCommand):
         # Create a list of the files to be scanned.
         scanner = Scanner()
         files = scanner.get_files()
-
         for file in files:
             print(file)
-            Cache(file)
+            Cache(file).check()
