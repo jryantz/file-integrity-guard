@@ -1,4 +1,4 @@
-from guardian.utils.log import CoreLogger
+
 
 class AppConfig:
     """
