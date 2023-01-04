@@ -12,7 +12,7 @@ from guardian.core.management.base import (
 )
 
 def find_commands(management_dir: str) -> list[str]:
-    command_dir = os.path.join(management_dir, "commands")
+    command_dir = os.path.join(management_dir, 'commands')
     return [
         name
         for _, name, is_pkg in pkgutil.iter_modules([command_dir])
@@ -20,7 +20,7 @@ def find_commands(management_dir: str) -> list[str]:
     ]
 
 def load_command_class(name):
-    module = import_module("guardian.core.management.commands.%s" % name)
+    module = import_module('guardian.core.management.commands.%s' % name)
     return module.Command()
 
 def get_commands() -> list[str]:
@@ -34,8 +34,8 @@ class ManagementUtility:
     def __init__(self, argv=None):
         self.argv = argv or sys.argv[:]
         self.prog_name = os.path.basename(self.argv[0])
-        if self.prog_name == "__main__.py":
-            self.prog_name = "python -m guardian"
+        if self.prog_name == '__main__.py':
+            self.prog_name = 'python -m guardian'
 
     def help(self, commands_only=False) -> str:
         """
@@ -46,10 +46,10 @@ class ManagementUtility:
             usage = sorted(get_commands())
         else:
             usage = [
-                "",
-                "Type '%s help <subcommand>' for help with a specific subcommand." % self.prog_name,
-                "",
-                "Available subcommands:",
+                '',
+                'Type \'%s help <subcommand>\' for help with a specific subcommand.' % self.prog_name,
+                '',
+                'Available subcommands:',
             ]
             for command in get_commands():
                 usage.append(command)
@@ -64,13 +64,13 @@ class ManagementUtility:
         commands = get_commands()
 
         if subcommand in commands:
-            app_name = "guardian.core"
+            app_name = 'guardian.core'
         else:
             possible_matches = get_close_matches(subcommand, commands)
-            sys.stderr.write("Unknown command: %r" % subcommand)
+            sys.stderr.write('Unknown command: %r' % subcommand)
             if possible_matches:
-                sys.stderr.write(". Did you mean %s?" % possible_matches[0])
-            sys.stderr.write("\nType '%s help' for usage.\n" % self.prog_name)
+                sys.stderr.write('. Did you mean %s?' % possible_matches[0])
+            sys.stderr.write('\nType \'%s help\' for usage.\n' % self.prog_name)
             sys.exit(1)
 
         if isinstance(app_name, BaseCommand):
@@ -87,11 +87,11 @@ class ManagementUtility:
         try:
             subcommand = self.argv[1]
         except IndexError:
-            subcommand = "help"
+            subcommand = 'help'
 
         parser = ArgumentParser(
             prog=self.prog_name,
-            usage="%(prog)s subcommand [options] [args]",
+            usage='%(prog)s subcommand [options] [args]',
             add_help=False,
             allow_abbrev=False,
         )
@@ -100,15 +100,15 @@ class ManagementUtility:
         except CommandError:
             pass
 
-        if subcommand == "help":
-            if "--commands" in args:
-                sys.stdout.write(self.help(commands_only=True) + "\n")
+        if subcommand == 'help':
+            if '--commands' in args:
+                sys.stdout.write(self.help(commands_only=True) + '\n')
             elif not args:
-                sys.stdout.write(self.help() + "\n")
+                sys.stdout.write(self.help() + '\n')
             else:
                 self.fetch_command(args[0]).print_help(self.prog_name, args[0])
-        elif subcommand == "version":
-            sys.stdout.write(guardian.get_version() + "\n")
+        elif subcommand == 'version':
+            sys.stdout.write(guardian.get_version() + '\n')
         else:
             self.fetch_command(subcommand).run(self.prog_name, self.argv)
 

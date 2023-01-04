@@ -6,7 +6,7 @@ from guardian.core.management.base import BaseCommand
 from guardian.scanner import Scanner
 
 class Command(BaseCommand):
-    help = "Starts the file integrity guard."
+    help = 'Starts the file integrity guard.'
 
     def handle(self, *args, **options):
         # Initialize the app.

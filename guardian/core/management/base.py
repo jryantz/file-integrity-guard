@@ -19,7 +19,7 @@ class BaseCommand:
     The base class that is inherited by all command line commands.
     """
 
-    help = ""
+    help = ''
 
     def __init__(self, stdout=None, stderr=None):
         self.stdout = stdout or sys.stdout
@@ -37,17 +37,18 @@ class BaseCommand:
         Create and return the parser for the command.
         """
 
-        kwargs.setdefault("formatter_class", HelpFormatter)
+        kwargs.setdefault('formatter_class', HelpFormatter)
         parser = ArgumentParser(
             prog="%s %s" % (os.path.basename(prog_name), subcommand),
             description=self.help or None,
             **kwargs,
         )
         parser.add_argument(
-            "--version",
-            action="version",
+            '-v',
+            '--version',
+            action='version',
             version=self.get_version(),
-            help="Show application's version number and exit.",
+            help='show application\'s version number and exit',
         )
         self.add_arguments(parser)
         return parser
@@ -77,14 +78,14 @@ class BaseCommand:
 
         arguments = parser.parse_args(argv[2:])
         options = vars(arguments)
-        args = options.pop("args", ())
+        args = options.pop('args', ())
         try:
             self.handle(*args, **options)
         except CommandError as e:
             if arguments.traceback:
                 raise
 
-            self.stderr.write("%s: %s" % (e.__class__.__name__, e))
+            self.stderr.write('%s: %s' % (e.__class__.__name__, e))
             sys.exit(e.returncode)
 
     def handle(self, *args, **options):
@@ -93,5 +94,5 @@ class BaseCommand:
         """
 
         raise NotImplementedError(
-            "subclasses of BaseCommand must provide a handle() method"
+            'subclasses of BaseCommand must provide a handle() method'
         )
