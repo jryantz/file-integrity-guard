@@ -46,10 +46,11 @@ class ManagementUtility:
             usage = sorted(get_commands())
         else:
             usage = [
+                'usage: %s <subcommand>' % self.prog_name,
                 '',
                 'Type \'%s help <subcommand>\' for help with a specific subcommand.' % self.prog_name,
                 '',
-                'Available subcommands:',
+                'subcommands:',
             ]
             for command in get_commands():
                 usage.append(command)
