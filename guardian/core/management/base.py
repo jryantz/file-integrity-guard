@@ -56,6 +56,17 @@ class BaseCommand:
     def add_arguments(self, parser):
         """
         Command arguments. Subclasses can implement this method.
+
+        `parser.add_argument(...)` Parameters
+        -------------------------------------
+
+        `nargs`, Number of Arguments: 
+
+        - `3`: 3 values, can be any number you want
+        - `?`: a single value, which can be optional
+        - `*`: a flexible number of values, which will be gathered into a list
+        - `+`: like *, but requiring at least one value
+        - `argparse.REMAINDER`: all the values that are remaining in the command line
         """
 
         pass
