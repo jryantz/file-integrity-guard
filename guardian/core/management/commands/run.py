@@ -1,5 +1,3 @@
-
-
 from guardian.app import AppConfig
 from guardian.cache import Cache
 from guardian.core.management.base import BaseCommand
