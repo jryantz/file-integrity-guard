@@ -1,12 +1,13 @@
 from hashlib import sha512
 from pathlib import Path
+from typing import Union
 
 class File:
     """
     The object that represents each file.
     """
 
-    def __init__(self, fullpath: str = None, dirpath: str = None, filename: str = None):
+    def __init__(self, fullpath: Path | str = None, dirpath: str = None, filename: str = None):
         """
         Creates a file object for the file, at the provided path, to be guarded.
 
@@ -24,7 +25,7 @@ class File:
 
         Parameters
         ----------
-        fullpath: `str` (optional)
+        fullpath: `Path` | `str` (optional)
             The full path to the file
         dirpath: `str` (optional)
             The path to the file
