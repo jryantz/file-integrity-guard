@@ -19,6 +19,7 @@ GUARDIAN_CACHE_FILENAME = '.guardian'
 
 GUARDED_DIRS = [
     'example',
+    'example/folder',
 ]
 
 GUARDED_FILES = [
