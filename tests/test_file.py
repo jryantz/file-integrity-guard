@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 from guardian.file import File
 
@@ -39,10 +40,16 @@ class TestFile(unittest.TestCase):
             lambda: File(fullpath='../example/test1.txt', dirpath='../example', filename='test1.txt'),
         )
 
-    def test_with_full_path(self):
+    def test_with_full_path_as_string(self):
         self.assertIsInstance(
             File(fullpath='../example/test1.txt'),
             File,
+        )
+
+    def test_with_full_path_as_path(self):
+        self.assertIsInstance(
+            File(fullpath=Path('../example/test1.txt')),
+            File
         )
 
     def test_with_separated_path(self):
