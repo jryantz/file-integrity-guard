@@ -112,12 +112,12 @@ class Command(BaseCommand):
         # sorting is consistent.
         data: dict[Path, str] = {}
         for file in files:
-            data[file.get_location()] = UNICODE_CHECK
+            data[file.path] = UNICODE_CHECK
         for error in errors:
             data[error] = UNICODE_QUEST
 
-        output.extend(self.output_legend())
-        output.extend(self.output_data(data))
+        output.extend(self._output_legend())
+        output.extend(self._output_data(data))
         print('\n'.join(output))
 
     def handle(self, *args, **options):
@@ -132,4 +132,4 @@ class Command(BaseCommand):
             scanner = Scanner(options['path'])
 
         # Output the results.
-        self.output(scanner.get_files(), scanner.get_errors())
+        self._output(scanner.get_files(), scanner.get_errors())
