@@ -5,6 +5,11 @@ from typing import Union
 class File:
     """
     The object that represents each file.
+
+    Attributes
+    ----------
+    _path: `Path`
+        The path object representing the file.
     """
 
     def __init__(self, fullpath: Path | str = None, dirpath: str = None, filename: str = None):

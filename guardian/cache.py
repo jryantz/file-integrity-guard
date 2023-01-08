@@ -11,6 +11,15 @@ class Cache:
     """
     The creator and manager of the cache file that stores
     the hash data.
+
+    Attributes
+    ----------
+    _target_file: `File`
+        The file object containing the properties and data about the 
+        file to be guarded.
+    _cache_file: `Path`
+        The path object representing the file that contains the cache
+        info for the target file.
     """
 
     def __init__(self, file: File, cache_filename: str = None):
