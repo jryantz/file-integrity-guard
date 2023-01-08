@@ -18,7 +18,7 @@ class Cache:
             cache_filename = settings.cache_filename
 
         self._target_file: File = file
-        self._cache_file: Path = Path(file.get_dirpath(), cache_filename).absolute()
+        self._cache_file: Path = Path(file.parent, cache_filename).absolute()
 
     def _create_cache(self):
         """
@@ -34,7 +34,7 @@ class Cache:
         for manipulation.
         """
 
-        filename: str = str(self._target_file.get_filename())
+        filename: str = str(self._target_file.name)
         data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
@@ -47,7 +47,7 @@ class Cache:
         Updates the target file data in the cache.
         """
 
-        filename: str = str(self._target_file.get_filename())
+        filename: str = str(self._target_file.name)
         data: dict[str, dict[str, str]] = {}
 
         with open(self._cache_file, 'r') as file:
@@ -95,7 +95,7 @@ class Cache:
 
         # Get the latest cached checksum and the current checksum.
         cache_checksum: str = self._get_latest_checksum(cache_data)
-        current_checksum: str = self._target_file.get_hash()
+        current_checksum: str = self._target_file.hash
 
         # Check if the checksum has changed.
         if current_checksum == cache_checksum:
