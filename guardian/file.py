@@ -60,68 +60,46 @@ class File:
             filepath = Path(dirpath, filename)
         else:
             filepath = Path(fullpath)
-        abspath = filepath.absolute()
-        
-        self._dirpath = abspath.parent
-        self._filename = abspath.name
+        self._path = filepath.absolute()
 
     def __repr__(self):
-        return '<%s: %s>' % (self.__class__.__name__, self.get_location())
+        return '<%s: %s>' % (self.__class__.__name__, self.path)
 
     def __str__(self):
-        return '%s' % (self.get_location())
+        return '%s' % (self.path)
 
-    def get_dirpath(self) -> str:
+    @property
+    def name(self) -> str:
         """
-        Returns the absolute path to the file
-
-        Returns
-        -------
-        `str`
-            The absolute path to the file
+        The name of the file, including the file extension.
         """
 
-        return self._dirpath
+        return self._path.name
 
-    def get_filename(self) -> str:
+    @property
+    def parent(self) -> Path:
         """
-        Returns the name of the file
-
-        Returns
-        -------
-        `str`
-            The name of the file
+        The absolute path to the file.
         """
 
-        return self._filename
+        return self._path.parent
 
-    def get_location(self) -> Path:
+    @property
+    def path(self) -> Path:
         """
-        Returns the absolute file location.
-
-        Returns
-        -------
-        `str`
-            The absolute file path
+        The absolute file location.
         """
 
-        dirpath = self.get_dirpath()
-        filename = self.get_filename()
-        return Path(dirpath, filename)
+        return self._path
 
-    def get_hash(self) -> str:
+    @property
+    def hash(self) -> str:
         """
-        Returns the file hash.
-
-        Returns
-        -------
-        `str`
-            The hash of the file contents
+        The hash of the file contents.
         """
 
         hash = sha512()
-        filepath = self.get_location()
-        with open(filepath, 'rb') as file:
+        with open(self.path, 'rb') as file:
             for chunk in iter(lambda: file.read(128 * hash.block_size), b''):
                 hash.update(chunk)
         return hash.hexdigest()
