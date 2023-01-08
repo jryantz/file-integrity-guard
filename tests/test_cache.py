@@ -56,7 +56,7 @@ class TestCacheFunctions(unittest.TestCase):
 
         # Update the cache.
         timestamp: str = self.cache._get_timestamp()
-        hash: str = self.file.get_hash()
+        hash: str = self.file.hash
         self.cache._update_cache({timestamp: hash})
 
         # Read the cache.
@@ -71,5 +71,5 @@ class TestCacheFunctions(unittest.TestCase):
 
         # Read the cache and check that the hash matches.
         data: dict[str, str] = self.cache._read_cache()
-        hash: str = self.file.get_hash()
+        hash: str = self.file.hash
         self.assertEqual(self.cache._get_latest_checksum(data), hash)
