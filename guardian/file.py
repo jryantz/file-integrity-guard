@@ -68,6 +68,9 @@ class File:
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.get_location())
 
+    def __str__(self):
+        return '%s' % (self.get_location())
+
     def get_dirpath(self) -> str:
         """
         Returns the absolute path to the file
