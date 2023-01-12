@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -11,22 +12,10 @@ UNICODE_CHECK = u'\u2713'
 UNICODE_CROSS = u'\u2717'
 UNICODE_QUEST = u'\u003f'
 
-UNICODE_BOXH = u'\u2500'
-UNICODE_BOXV = u'\u2502'
-UNICODE_BOXDR = u'\u250c'
-UNICODE_BOXDL = u'\u2510'
-UNICODE_BOXUR = u'\u2514'
-UNICODE_BOXUL = u'\u2518'
-UNICODE_BOXVR = u'\u251c'
-UNICODE_BOXVL = u'\u2524'
-UNICODE_BOXHD = u'\u252c'
-UNICODE_BOXHU = u'\u2534'
-UNICODE_BOXVH = u'\u253c'
-
 class Command(BaseCommand):
     help = '''
     Outputs the status of one, many, or all tracked files.
-    Paths containing spaces should be excaped or quoted.
+    Paths containing spaces must be escaped or quoted.
     '''
 
     _legend: dict[str, str] = {
@@ -38,11 +27,49 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             'path',
+            action='store',
             nargs='*',
             help='file or directory paths to status',
+            metavar='PATH'
+        )
+        parser.add_argument(
+            '-o',
+            '--output',
+            action='store',
+            default='pretty',
+            type=str,
+            choices=['json', 'pretty'],
+            help='set the output format: pretty (default), json',
+            metavar='FORMAT',
         )
 
-    def _output_legend(self) -> list[str]:
+    def _status_files(self, files: list[File], errors: list[Path]) -> dict[Path, str]:
+        """
+        Combine all files and errors into a single list so that the sorting is consistent.
+
+        Parameters
+        ----------
+        files: `list[File]`
+            A list of File objects representing existing files that are 
+            going to be statused.
+        errors: `list[Path]`
+            A list of Path objects representing files or directories that
+            do not exist.
+
+        Returns
+        -------
+        `dict[Path, str]`
+            A dictionary of paths and the status.
+        """
+
+        data: dict[Path, str] = {}
+        for file in files:
+            data[file.path] = UNICODE_CHECK
+        for error in errors:
+            data[error] = UNICODE_QUEST
+        return data
+
+    def _output_pretty_legend(self) -> list[str]:
         """
         Creates the line-by-line output to render the status legend.
 
@@ -66,7 +93,7 @@ class Command(BaseCommand):
 
         return output
 
-    def _output_data(self, data: dict[Path, str]) -> list[str]:
+    def _output_pretty_data(self, data: dict[Path, str]) -> list[str]:
         """
         Creates the line-by-line output for each file to be statused.
 
@@ -85,14 +112,14 @@ class Command(BaseCommand):
         output: list[str] = []
 
         # Build the data.
-        keys = sorted(data.keys())
-        for count, key in enumerate(keys, start=1):
-            value = data[key]
-            output.append(f'{count} [{value}] {key}')
+        paths = sorted(data.keys())
+        for count, path in enumerate(paths, start=1):
+            symbol = data[path]
+            output.append(f'{count} [{symbol}] {path}')
 
         return output
 
-    def _output(self, files: list[File], errors: list[Path]):
+    def _output_pretty(self, files: list[File], errors: list[Path]):
         """
         Compiles and then prints the data to status the requested files.
 
@@ -107,18 +134,39 @@ class Command(BaseCommand):
         """
 
         output: list[str] = []
-        
-        # Combine all files and errors into a single list so that the 
-        # sorting is consistent.
-        data: dict[Path, str] = {}
-        for file in files:
-            data[file.path] = UNICODE_CHECK
-        for error in errors:
-            data[error] = UNICODE_QUEST
+        data: dict[Path, str] = self._status_files(files, errors)
 
-        output.extend(self._output_legend())
-        output.extend(self._output_data(data))
+        output.extend(self._output_pretty_legend())
+        output.extend(self._output_pretty_data(data))
         print('\n'.join(output))
+
+    def _output_json(self, files: list[File], errors: list[Path]):
+        """
+        Compiles and then prints the data, as json, to status the requested files.
+
+        Parameters
+        ----------
+        files: `list[File]`
+            A list of File objects representing existing files that are 
+            going to be statused.
+        errors: `list[Path]`
+            A list of Path objects representing files or directories that
+            do not exist.
+        """
+
+        output: list[dict[str, str]] = []
+        data: dict[Path, str] = self._status_files(files, errors)
+
+        paths = sorted(data.keys())
+        for count, path in enumerate(paths, start=1):
+            symbol = data[path]
+            output.append({
+                'path': str(path),
+                'symbol': symbol,
+                'status': self._legend[symbol],
+            })
+
+        print(json.dumps(output))
 
     def handle(self, *args, **options):
         # Initialize the app.
@@ -132,4 +180,11 @@ class Command(BaseCommand):
             scanner = Scanner(options['path'])
 
         # Output the results.
-        self._output(scanner.get_files(), scanner.get_errors())
+        files = scanner.get_files()
+        errors = scanner.get_errors()
+        if options['output'] == 'json':
+            # Output as json if the user are requested json.
+            self._output_json(files, errors)
+        else:
+            # Output pretty by default.
+            self._output_pretty(files, errors)
