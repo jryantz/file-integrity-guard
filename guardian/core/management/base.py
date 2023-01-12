@@ -44,7 +44,7 @@ class BaseCommand:
             **kwargs,
         )
         parser.add_argument(
-            '-v',
+            '-V',
             '--version',
             action='version',
             version=self.get_version(),
