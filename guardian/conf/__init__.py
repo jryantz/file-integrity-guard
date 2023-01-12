@@ -9,11 +9,15 @@ class Settings:
     def __new__(self):
         if not hasattr(self, 'instance'):
             self.instance = super(Settings, self).__new__(self)
+            self.initialized = False
         return self.instance
 
     def __init__(self):
+        # Check if the the settings manager already exists.
+        if self.initialized: return
+
         self.debug = True
-        if not hasattr(self, 'debug'):
+        if isinstance(DEBUG, bool):
             self.debug = DEBUG
 
         self.cache_filename = '.guardian'
@@ -33,5 +37,7 @@ class Settings:
         self.guarded_files = []
         if isinstance(GUARDED_FILES, list):
             self.guarded_files = GUARDED_FILES
+
+        self.initialized = True
 
 settings = Settings()
