@@ -37,6 +37,10 @@ class Scanner:
             and `guarded_paths` values from the settings will be used.
         """
 
+        self._paths = []
+        self._files = []
+        self._errors = []
+
         # Register the paths if passed or default to the paths
         # provided in settings.
         if paths is None:
